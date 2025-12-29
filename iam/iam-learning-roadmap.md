@@ -20,7 +20,8 @@ IAM (Identity and Access Management) 就是云时代对这两个问题的系统�
 | 3 | [03-identity-and-credentials.md](./03-identity-and-credentials.md) | 身份与凭证 |
 | 4 | [04-assume-role.md](./04-assume-role.md) | Assume Role 机制 |
 | 5 | [05-federated-identity.md](./05-federated-identity.md) | 联邦身份 |
-| 6 | [06-best-practices.md](./06-best-practices.md) | 最佳实践 |
+| 6 | [06-workload-identity.md](./06-workload-identity.md) | 工作负载身份 |
+| 7 | [07-best-practices.md](./07-best-practices.md) | 最佳实践 |
 
 ---
 

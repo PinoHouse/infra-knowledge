@@ -11,6 +11,19 @@ IAM (Identity and Access Management) 就是云时代对这两个问题的系统�
 
 ---
 
+## 文档索引
+
+| Layer | 文档 | 主题 |
+|-------|------|------|
+| 1 | [01-why-iam.md](./01-why-iam.md) | 为什么需要 IAM |
+| 2 | [02-core-model.md](./02-core-model.md) | IAM 核心模型 |
+| 3 | [03-identity-and-credentials.md](./03-identity-and-credentials.md) | 身份与凭证 |
+| 4 | [04-assume-role.md](./04-assume-role.md) | Assume Role 机制 |
+| 5 | [05-federated-identity.md](./05-federated-identity.md) | 联邦身份 |
+| 6 | [06-best-practices.md](./06-best-practices.md) | 最佳实践 |
+
+---
+
 ## Layer 1: Why - 为什么需要 IAM
 
 ### 权限管理的演进

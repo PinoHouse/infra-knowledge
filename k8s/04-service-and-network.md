@@ -116,25 +116,26 @@ Service  ──selector──▶  匹配的 Pod 集合
 │                                                             │
 │   ClusterIP (默认)                                          │
 │   ─────────────────                                         │
-│   只能集群内部访问                                            │
+│   集群内 Pod 访问集群内 Pod                                  │
+│   通过稳定虚拟 IP 转发到后端 Pod                             │
 │   适用：后端服务、数据库                                      │
 │                                                             │
 │   NodePort                                                  │
 │   ─────────────────                                         │
-│   每个 Node 上开一个端口（30000-32767）                      │
-│   Node:Port → Service                                       │
+│   集群外通过 NodeIP:Port 访问集群内 Pod                       │
+│   相当于把集群内服务挂到每个 Node 的端口上                    │
 │   适用：开发测试、临时暴露                                    │
 │                                                             │
 │   LoadBalancer                                              │
 │   ─────────────────                                         │
-│   云厂商为你创建一个真实的外部 LB                             │
-│   External LB → Node:Port → Service                         │
+│   集群外通过云 LB 访问集群内 Pod                              │
+│   云厂商为 Service 创建一个真实的外部入口                     │
 │   适用：生产环境暴露服务                                      │
 │                                                             │
 │   ExternalName                                              │
 │   ─────────────────                                         │
-│   DNS CNAME，把 Service 名映射到外部域名                      │
-│   my-svc → my-db.rds.amazonaws.com                          │
+│   集群内 Pod 用 Service 名访问集群外域名                      │
+│   本质是 DNS CNAME，只做名字映射，不转发流量                  │
 │   适用：集群内统一访问外部资源                                │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -143,18 +144,19 @@ Service  ──selector──▶  匹配的 Pod 集合
 
 ```
 ClusterIP：
-  集群内 Pod ──▶ ClusterIP ──▶ Pod
+  集群内 Pod ──▶ Service (ClusterIP) ──▶ 集群内 Pod
 
 NodePort：
-  外部 ──▶ NodeIP:30080 ──▶ ClusterIP ──▶ Pod
-          (每个 Node 都能接)
+  集群外客户端 ──▶ NodeIP:30080 ──▶ Service ──▶ 集群内 Pod
+                  (把集群内服务挂到每个 Node 的端口)
 
 LoadBalancer：
-  外部 ──▶ Cloud LB (公网IP) ──▶ NodeIP:30080 ──▶ Pod
+  集群外客户端 ──▶ Cloud LB (公网IP) ──▶ Service ──▶ 集群内 Pod
+                  (给集群内服务提供一个真实的公网入口)
 
 ExternalName：
-  Pod 访问 my-db ──▶ DNS 返回 my-db.rds.amazonaws.com
-  (根本不经过 kube-proxy)
+  集群内 Pod 访问 my-db ──▶ DNS 返回 my-db.rds.amazonaws.com
+  (给集群外资源起别名，不经过 kube-proxy，也不转发流量)
 ```
 
 ### 2.5 Headless Service - 特殊的"无 IP" Service
